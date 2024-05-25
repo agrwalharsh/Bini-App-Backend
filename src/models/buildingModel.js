@@ -38,6 +38,10 @@ const buildingSchema = new mongoose.Schema({
     subscriptionHistory: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Subscription'
+    }],
+    towers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Tower'
     }]
 });
 
