@@ -10,6 +10,7 @@ const subscriptionStatusController = require('../controllers/building/subscripti
 const buildingsListWithStartDate = require('../controllers/building/buildingsStartDate')
 const createTowerController = require('../controllers/building/tower/createTower')
 const updateTowerController = require('../controllers/building/tower/updateTower')
+const buildingTowerDataController = require('../controllers/building/buildingTowerData')
 
 
 router.post('/buildingRegistration',  validateAuth, createBuildingController.createBuilding);
@@ -30,6 +31,8 @@ router.get('/:id/previous-start-dates', buildingDataController.getBuildingPrevio
 
 router.post('/createTower', validateAuth, createTowerController.createTower);
 
-router.put('/updateTower', validateAuth, updateTowerController.updateTower)
+router.put('/updateTower', validateAuth, updateTowerController.updateTower);
+
+router.get('/buildingTowerDetails', validateAuth, buildingTowerDataController.getBuildingsTowerData);
 
 module.exports = router;
