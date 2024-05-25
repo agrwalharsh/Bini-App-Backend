@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const subscriptionSchema = require('./subscriptionModel');
 
 const buildingSchema = new mongoose.Schema({
     name: {
@@ -29,8 +30,36 @@ const buildingSchema = new mongoose.Schema({
     buildingAdmins: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'BuildingAdmin'
+    }],
+    currentSubscription: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Subscription'
+    },
+    subscriptionHistory: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Subscription'
     }]
 });
+
+// Method to check if the current subscription is valid
+buildingSchema.methods.isSubscriptionValid = async function () {
+    console.log("isSubscriptionValid function invoked")
+    try {
+        const currentDate = new Date();
+        console.log("current date -> " + currentDate)
+        const subscription = await mongoose.model('Subscription').findById(this.currentSubscription);
+        console.log("current subsciption date -> " + subscription)
+        if (!subscription) {
+            return false; // No subscription found
+        }
+        console.log("End date -> " + subscription.endDate)
+
+        return subscription.endDate > currentDate;
+    } catch (error) {
+        console.error('Error checking subscription validity:', error);
+        return false; // Handle error gracefully and return false
+    }
+};
 
 buildingSchema.index({ name: 1, address: 1 }, { unique: true });
 
