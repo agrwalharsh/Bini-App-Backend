@@ -1,7 +1,7 @@
 const User = require('../../models/userModel');
 const Validators = require('../../utils/validators')
 const tokenHandler = require('../../auth/tokenHandler')
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const CONSTANTS = require('../../utils/constants');
 
 exports.createUser = async (req, res) => {
