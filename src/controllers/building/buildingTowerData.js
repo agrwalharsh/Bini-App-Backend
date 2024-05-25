@@ -6,9 +6,16 @@ exports.getBuildingsTowerData = async (req, res) => {
             .populate('towers')
             .select('id name constructionCompany address towers');
 
-        res.status(200).json(buildings);
+        if (buildings.length === 0) {
+            return res.status(200).json({ message: 'No buildings found' });
+        }
+
+        res.status(200).json({
+            message: 'Buildings retrieved successfully',
+            data: buildings
+        });
     } catch (error) {
         console.error('Error fetching buildings:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ message: 'Internal server error', error: error.toString() });
     }
-}
+};
