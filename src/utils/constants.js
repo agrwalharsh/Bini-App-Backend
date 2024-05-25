@@ -1,6 +1,12 @@
 const CONSTANTS = {
     ERROR: {
         UNAUTHORIZED : "UnauthorizedError"
+    },
+    ROLES: {
+        GLOBAL_ADMIN: 'globalAdmin',
+        BUILDING_ADMIN: 'buildingAdmin',
+        SECURITY: 'security',
+        RESIDENT: 'resident'
     }
     // HTTP_STATUS: {
     //     OK: 200,
@@ -17,10 +23,6 @@ const CONSTANTS = {
     //     DATA_NOT_FOUND: 'Data not found',
     //     INTERNAL_SERVER_ERROR: 'Internal server error'
     // },
-    // USER_ROLES: {
-    //     GLOBAL_ADMIN: 'global admin',
-    //     BUILDING_ADMIN: 'building admin'
-    // }
 };
 
 module.exports = CONSTANTS;

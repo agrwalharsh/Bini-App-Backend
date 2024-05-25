@@ -1,23 +1,27 @@
 const { verifyToken } = require("../auth/tokenHandler");
 const CONSTANTS = require("../utils/constants");
+const errorHandler = require("../utils/errorHandler");
 
 async function validateAuth(req, res, next) {
     const { authorization } = req.headers;
     if (!authorization) {
-        throw new Error(CONSTANTS.ERROR.UNAUTHORIZED);
+        return res.status(401).json({ success: false, message: 'Unauthorized' });
     }
     try {
         const payload = await verifyToken(authorization);
         if (payload) {
+            console.log(payload)
+            req.user = payload
             next();
         } else {
-            throw new Error(CONSTANTS.ERROR.UNAUTHORIZED);
+            return res.status(401).json({ success: false, message: 'Unauthorized' });
         }
     } catch (err) {
-        throw new Error(CONSTANTS.ERROR.UNAUTHORIZED);
+        console.log(err.toString())
+        return res.status(401).json({ success: false, message: 'Unauthorized' });
     }
 }
 
 module.exports = {
-    validateAuth,
+    validateAuth
 };

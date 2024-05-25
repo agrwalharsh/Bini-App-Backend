@@ -1,16 +1,19 @@
 const jwt = require("jsonwebtoken");
-const secret = process.env.secret;
 
 function verifyToken(token) {
-    if (!token) return null;
-    try {
-      return jwt.verify(token, secret);
-    } catch (error) {
-      return null;
-    }
+  if (!token) return null;
+  try {
+    return jwt.verify(token, process.env.JWT_SECRET);
+  } catch (error) {
+    return null;
   }
+}
 
-  module.exports = {
-    verifyToken
-  };
-  
+function generateToken(userId, expiresIn = '1h') {
+  const token = jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn });
+  return token;
+};
+
+module.exports = {
+  verifyToken, generateToken
+};

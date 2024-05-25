@@ -1,10 +1,16 @@
 const mongoose = require('mongoose');
+const CONSTANTS = require('../utils/constants');
+
+const options = {
+    discriminatorKey: 'role',
+    collection: 'users',
+    timestamps: true
+};
 
 const userSchema = new mongoose.Schema({
-    username: {
+    mobileNumber: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     password: {
         type: String,
@@ -12,9 +18,24 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ['global admin', 'building admin'],
-        default: 'building admin'
+        enum: Object.values(CONSTANTS.ROLES),
+        default: CONSTANTS.ROLES.RESIDENT
+    },
+    tempPassword: {
+        type: String
+    },
+    tempPasswordExpiry: {
+        type: Date
+    },
+    password: {
+        type: String
+    },
+    ref: {
+        type: mongoose.Schema.Types.ObjectId,
+        refPath: 'role'
     }
-});
+}, options);
+
+userSchema.index({ mobileNumber: 1, role: 1 }, { unique: true });
 
 module.exports = mongoose.model('User', userSchema);

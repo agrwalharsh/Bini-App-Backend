@@ -1,11 +1,11 @@
 require('dotenv').config()
 const morgan = require('morgan');
 const express = require('express');
-const mongoose = require('mongoose');
 const buildingRoutes = require('./routes/buildingRoutes');
 const userRoutes = require('./routes/userRoutes');
 const errorHandler = require('./utils/errorHandler');
-const connectDB = require('./config/db')
+const connectDB = require('./config/db');
+const CONSTANTS = require('./utils/constants');
 
 const app = express();
 connectDB()
@@ -14,8 +14,6 @@ connectDB()
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(errorHandler);
-
-
 
 // Routes
 app.use('/building', buildingRoutes);
