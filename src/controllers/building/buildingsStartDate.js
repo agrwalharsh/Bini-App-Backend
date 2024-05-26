@@ -35,7 +35,7 @@ exports.getBuildingsListWithStartDate = async (req, res) => {
             };
         });
 
-        res.status(200).json(buildingsList);
+        res.status(200).json({buildingsList});
     } catch (error) {
         console.error('Error fetching buildings:', error);
         res.status(500).json({ message: 'Internal server error' });
