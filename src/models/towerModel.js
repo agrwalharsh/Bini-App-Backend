@@ -9,7 +9,12 @@ const towerSchema = new mongoose.Schema({
         required: true
     },
     number: {
-        type: String,
+        type: Number,
+        required: true
+    },
+    building: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Building',
         required: true
     },
     numberOfFlats: {

@@ -9,8 +9,6 @@ exports.createBuilding = async (req, res) => {
         const { userId } = req.user;
 
         // Retrieve user from the database
-        console.log("userId -> " + userId)
-        // const user = await User.findById(userId);
         const user = await User.findById(userId).select('role').lean();
 
         if (!user) {
@@ -22,21 +20,24 @@ exports.createBuilding = async (req, res) => {
             return res.status(403).json({ message: 'Only globalAdmin is authorized to register buildings' });
         }
 
-        // Extract inputs from request body
-        const { name, constructionCompany, address } = req.body;
+         // Extract inputs from request body
+         const { name, constructionCompany, address, buildingContactNumber, officeAddress, officeContactNumber } = req.body;
 
-        // Validate inputs
-        if (!name || !constructionCompany || !address) {
-            return res.status(400).json({ message: 'Name, construction company, and address are required' });
-        }
-
-        // Create building object with default dates
-        const building = new Building({
-            name,
-            constructionCompany,
-            address,
-            createdBy: userId
-        });
+         // Validate inputs
+         if (!name || !constructionCompany || !address || !buildingContactNumber || !officeAddress || !officeContactNumber) {
+             return res.status(400).json({ message: 'All fields are mandatory' });
+         }
+ 
+         // Create building object with default dates
+         const building = new Building({
+             name,
+             constructionCompany,
+             address,
+             buildingContactNumber,
+             officeAddress,
+             officeContactNumber,
+             createdBy: userId
+         });
 
         // Save the building to the database
         await building.save();

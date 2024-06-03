@@ -1,11 +1,12 @@
 require('dotenv').config()
-const morgan = require('morgan');
-const express = require('express');
-const buildingRoutes = require('./routes/buildingRoutes');
-const userRoutes = require('./routes/userRoutes');
-const errorHandler = require('./utils/errorHandler');
-const connectDB = require('./config/db');
-const CONSTANTS = require('./utils/constants');
+const morgan = require('morgan')
+const express = require('express')
+const buildingRoutes = require('./routes/buildingRoutes')
+const userRoutes = require('./routes/userRoutes')
+const towerRoutes = require('./routes/towerRoutes')
+const errorHandler = require('./utils/errorHandler')
+const connectDB = require('./config/db')
+const CONSTANTS = require('./utils/constants')
 
 const app = express();
 connectDB()
@@ -18,6 +19,7 @@ app.use(errorHandler);
 // Routes
 app.use('/building', buildingRoutes);
 app.use('/user', userRoutes);
+app.use('/tower', towerRoutes)
 
 app.get('/', (req, res) => {
     res.send('Welcome to my API!');

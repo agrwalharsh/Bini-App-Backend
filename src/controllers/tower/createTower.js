@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const Building = require('../../../models/buildingModel');
-const Tower = require('../../../models/towerModel');
+const Building = require('../../models/buildingModel');
+const Tower = require('../../models/towerModel');
 
 exports.createTower = async (req, res) => {
     const { buildingId, towerName, towerNumber, numberOfFlats } = req.body;
@@ -23,7 +23,8 @@ exports.createTower = async (req, res) => {
         const newTower = new Tower({
             name: towerName,
             number: towerNumber,
-            numberOfFlats: numberOfFlats
+            numberOfFlats: numberOfFlats,
+            building: buildingId
         });
 
         await newTower.save();

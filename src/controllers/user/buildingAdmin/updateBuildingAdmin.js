@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const BuildingAdmin = require('../../models/buildingAdminModel');
-const User = require('../../models/userModel');
-const { ROLES } = require('../../utils/constants');
+const BuildingAdmin = require('../../../models/buildingAdminModel');
+const User = require('../../../models/userModel');
+const { ROLES } = require('../../../utils/constants');
 
 exports.updateBuildingAdmin = async (req, res) => {
     const session = await mongoose.startSession();

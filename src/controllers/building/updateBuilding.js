@@ -8,11 +8,11 @@ exports.updateBuildingDetails = async (req, res) => {
     session.startTransaction();
 
     try {
-        const { buildingId, name, constructionCompany, address } = req.body;
+        const { buildingId, name, constructionCompany, address, buildingContactNumber, officeAddress, officeContactNumber } = req.body;
         const { userId } = req.user;
 
         // Validate inputs
-        if (!name || !constructionCompany || !address) {
+        if (!name || !constructionCompany || !address || !buildingContactNumber || !officeAddress ||!officeContactNumber) {
             await session.abortTransaction();
             session.endSession();
             return res.status(400).json({ message: 'All fields are required' });
@@ -46,7 +46,9 @@ exports.updateBuildingDetails = async (req, res) => {
         building.name = name;
         building.constructionCompany = constructionCompany;
         building.address = address;
-        building.updatedDate = Date.now();
+        building.buildingContactNumber = buildingContactNumber
+        building.officeAddress = officeAddress 
+        building.officeContactNumber = officeContactNumber
 
         await building.save({ session });
 

@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
-const BuildingAdmin = require('../../models/buildingAdminModel');
-const Building = require('../../models/buildingModel');
-const User = require('../../models/userModel');
-const { ROLES } = require('../../utils/constants');
+const BuildingAdmin = require('../../../models/buildingAdminModel');
+const Building = require('../../../models/buildingModel');
+const User = require('../../../models/userModel');
+const { ROLES } = require('../../../utils/constants');
 
 exports.createBuildingAdmin = async (req, res) => {
     const session = await mongoose.startSession();
@@ -43,12 +43,20 @@ exports.createBuildingAdmin = async (req, res) => {
             return res.status(404).json({ message: 'Building not found' });
         }
 
+        // Check the maxNoOfAdmins constraint
+        const currentAdminCount = await BuildingAdmin.countDocuments({ building: buildingId }).session(session);
+        if (building.maxNoOfAdmins && currentAdminCount >= building.maxNoOfAdmins) {
+            await session.abortTransaction();
+            session.endSession();
+            return res.status(400).json({ message: 'Maximum number of building admins reached' });
+        }
+
         // Check if an admin with the same mobile number is already registered for this building
         const existingAdmin = await BuildingAdmin.findOne({ mobileNumber, building: buildingId }).session(session);
         if (existingAdmin) {
             await session.abortTransaction();
             session.endSession();
-            return res.status(404).json({ message: 'Admin with this mobile number is already registered for this building' });
+            return res.status(409).json({ message: 'Admin with this mobile number is already registered for this building' });
         }
 
         const buildingAdmin = new BuildingAdmin({

@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 const subscriptionSchema = require('./subscriptionModel');
 
+const options = {
+    timestamps: true
+}
+
 const buildingSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -14,13 +18,17 @@ const buildingSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    createdDate: {
-        type: Date,
-        default: Date.now
+    buildingContactNumber: {
+        type: String,
+        required: true
     },
-    updatedDate: {
-        type: Date,
-        default: Date.now
+    officeAddress: {
+        type: String,
+        required: true
+    },
+    officeContactNumber: {
+        type: String,
+        required: true
     },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
@@ -42,8 +50,16 @@ const buildingSchema = new mongoose.Schema({
     towers: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Tower'
-    }]
-});
+    }],
+    isActive: {
+        type: Boolean,
+        default: true
+    },
+    maxNoOfAdmins: {
+        type: Number,
+        default: 2
+    }
+}, options);
 
 // Method to check if the current subscription is valid
 buildingSchema.methods.isSubscriptionValid = async function () {

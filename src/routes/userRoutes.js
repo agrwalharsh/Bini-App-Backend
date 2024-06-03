@@ -1,7 +1,16 @@
-const express = require('express');
-const router = express.Router();
-const userController = require('../controllers/user/createUser');
+const express = require('express')
+const { validateAuth } = require('../auth/auth')
+const router = express.Router()
+const createGlobalAdminController = require('../controllers/user/globalAdmin/createGlobalAdmin');
+const updateBuildingAdminController = require('../controllers/user/buildingAdmin/updateBuildingAdmin')
+const createBuildingAdminController = require('../controllers/user/buildingAdmin/createBuildingAdmin')
 
-router.post('/createUser', userController.createUser);
+// Global Admin
+router.post('/createGlobalAdmin', createGlobalAdminController.createGlobalAdmin);
+
+// Building Admin
+router.post('/createBuildingAdmin', validateAuth, createBuildingAdminController.createBuildingAdmin);
+
+router.put('/updateBuildingAdmin', validateAuth, updateBuildingAdminController.updateBuildingAdmin);
 
 module.exports = router;

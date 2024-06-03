@@ -1,13 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const Building = require('../../../models/buildingModel');
-const Tower = require('../../../models/towerModel');
+const Building = require('../../models/buildingModel');
+const Tower = require('../../models/towerModel');
 
 exports.updateTower =  async (req, res) => {
     const { buildingId, towerId, towerName, towerNumber, numberOfFlats } = req.body;
+    console.log("Building ID -> " + buildingId)
 
     try {
         const building = await Building.findById(buildingId).populate('towers').exec();
+        console.log("Building -> " + building)
 
         if (!building) {
             return res.status(404).json({ message: 'Building not found' });
