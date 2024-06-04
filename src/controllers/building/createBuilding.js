@@ -44,7 +44,7 @@ exports.createBuilding = async (req, res) => {
 
         res.status(201).json({ message: 'Building registered successfully', building });
     } catch (error) {
-        console.error(error);
+        console.log("Error -> " + error);
         if (error.code === 11000) { // MongoDB duplicate key error code
             return res.status(404).json({ message: 'Building with the same name and address already exists' });
         }
