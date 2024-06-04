@@ -57,7 +57,7 @@ const buildingSchema = new mongoose.Schema({
     },
     maxNoOfAdmins: {
         type: Number,
-        default: 2
+        default: 1
     }
 }, options);
 
