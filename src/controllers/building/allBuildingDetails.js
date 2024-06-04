@@ -56,7 +56,7 @@ exports.getAllBuildings = async (req, res) => {
             }
         ]);
 
-        res.status(200).json(buildings);
+        res.status(200).json({buildings: buildings});
     } catch (error) {
         console.error('Error fetching buildings:', error);
         res.status(500).json({ error: 'Internal Server Error' });
