@@ -25,6 +25,7 @@ exports.createBuilding = async (req, res) => {
 
          // Validate inputs
          if (!name || !constructionCompany || !address || !buildingContactNumber || !officeAddress || !officeContactNumber) {
+            console.log("Error -> All fields are mandatory!")
              return res.status(400).json({ message: 'All fields are mandatory' });
          }
  
