@@ -6,7 +6,7 @@ const CONSTANTS = {
         GLOBAL_ADMIN: 'globalAdmin',
         BUILDING_ADMIN: 'buildingAdmin',
         SECURITY: 'security',
-        RESIDENT: 'resident'
+        FLAT_ADMIN: 'flatAdmin'
     }
     // HTTP_STATUS: {
     //     OK: 200,

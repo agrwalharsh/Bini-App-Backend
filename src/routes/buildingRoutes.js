@@ -6,6 +6,7 @@ const buildingListController = require('../controllers/building/allBuildingDetai
 const updateBuildingSubscriptionController = require('../controllers/building/updateBuildingSubscription')
 const deleteBuildingController = require('../controllers/building/deleteBuilding')
 const updateBuildingController = require('../controllers/building/updateBuilding')
+const buildingDetailController = require('../controllers/building/buildingDetail')
 
 // Building
 
@@ -18,5 +19,7 @@ router.delete('/deleteBuilding', validateAuth, deleteBuildingController.deleteBu
 router.get('/buildingsList', validateAuth, buildingListController.getAllBuildings);
 
 router.put('/updateSubscription', validateAuth, updateBuildingSubscriptionController.updateSubscription);
+
+router.get('/buildingDetail', validateAuth, buildingDetailController.getBuildingDetails);
 
 module.exports = router;

@@ -23,7 +23,7 @@ exports.generateTemporaryPassword = async (req, res) => {
                 return res.status(403).json({ message: 'Global Admin can only generate passwords for Building Admin' });
             }
         } else if (parentUser.role === CONSTANTS.ROLES.BUILDING_ADMIN) {
-            if (![CONSTANTS.ROLES.RESIDENT, CONSTANTS.ROLES.SECURITY].includes(targetUser.role)) {
+            if (![CONSTANTS.ROLES.FLAT_ADMIN, CONSTANTS.ROLES.SECURITY].includes(targetUser.role)) {
                 return res.status(403).json({ message: 'Building Admin can only generate passwords for Flat Resident or Security' });
             }
         } else {

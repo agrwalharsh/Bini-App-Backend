@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         enum: Object.values(CONSTANTS.ROLES),
-        default: CONSTANTS.ROLES.RESIDENT
+        default: CONSTANTS.ROLES.FLAT_ADMIN
     },
     tempPassword: {
         type: String

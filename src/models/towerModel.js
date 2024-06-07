@@ -20,7 +20,15 @@ const towerSchema = new mongoose.Schema({
     numberOfFlats: {
         type: Number,
         required: true
-    }
+    },
+    createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    updatedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
 }, options);
 
 module.exports = mongoose.model('Tower', towerSchema)

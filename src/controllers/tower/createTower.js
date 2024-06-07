@@ -2,12 +2,20 @@ const express = require('express');
 const router = express.Router();
 const Building = require('../../models/buildingModel');
 const Tower = require('../../models/towerModel');
+const User = require('../../models/userModel');
+const { ROLES } = require('../../utils/constants');
 
 exports.createTower = async (req, res) => {
+    const { userId } = req.user
     const { buildingId, towerName, towerNumber, numberOfFlats } = req.body;
 
     try {
-        const building = await Building.findById(buildingId).populate('towers').exec();
+        const user = await User.findById(userId)
+        var buildingid = buildingId
+        if(user.role == ROLES.BUILDING_ADMIN){
+            buildingid = user.building
+        }
+        const building = await Building.findById(buildingid).populate('towers').exec();
 
         if (!building) {
             return res.status(404).json({ message: 'Building not found' });
@@ -24,7 +32,8 @@ exports.createTower = async (req, res) => {
             name: towerName,
             number: towerNumber,
             numberOfFlats: numberOfFlats,
-            building: buildingId
+            building: buildingid,
+            createdBy: userId
         });
 
         await newTower.save();
