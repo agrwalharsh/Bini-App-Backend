@@ -3,6 +3,7 @@ const router = express.Router();
 const Building = require('../../models/buildingModel');
 const Tower = require('../../models/towerModel');
 const User = require('../../models/userModel');
+const { ROLES } = require('../../utils/constants');
 
 exports.updateTower =  async (req, res) => {
     const { userId } = req.user
@@ -13,11 +14,12 @@ exports.updateTower =  async (req, res) => {
 
         const user = await User.findById(userId).select('role').lean();
 
+        var buildingid = buildingId
         if(user.role == ROLES.BUILDING_ADMIN){
-            buildingId = userId
+            buildingid = user.building
         }
 
-        const building = await Building.findById(buildingId).populate('towers').exec();
+        const building = await Building.findById(buildingid).populate('towers').exec();
         console.log("Building -> " + building)
 
         if (!building) {
