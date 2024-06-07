@@ -8,6 +8,8 @@ const generateTemporaryPasswordController = require('../controllers/user/authori
 const setPasswordController = require('../controllers/user/authorization/userSetPassword')
 const createFlatAdminController = require('../controllers/user/flatAdmin/createFlatAdmin')
 const getFlatAdminsController = require('../controllers/user/flatAdmin/getAllFlatAdmins')
+const createSecurityUserController = require('../controllers/user/security/createSecurityUser')
+const getSecurityUsersByBuildingController = require('../controllers/user/security/getSecurityUsersByBuilding')
 
 // Global Admin
 router.post('/createGlobalAdmin', createGlobalAdminController.createGlobalAdmin);
@@ -22,9 +24,14 @@ router.put('/generateTempPassword', validateAuth, generateTemporaryPasswordContr
 
 router.put('/setPassword', setPasswordController.setPassword);
 
-//Flat Admin
+// Flat Admin
 router.post('/createFlatAdmin', validateAuth, createFlatAdminController.createFlatAdmin);
 
 router.get('/getFlatAdmins', validateAuth, getFlatAdminsController.getFlatAdminsByBuilding);
+
+// Security User
+router.post('/createSecurityUser', validateAuth, createSecurityUserController.createSecurityUser)
+
+router.get('/getSecurityUsers', validateAuth, getSecurityUsersByBuildingController.getSecurityUsersByBuilding)
 
 module.exports = router;
