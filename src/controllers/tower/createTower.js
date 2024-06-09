@@ -22,10 +22,10 @@ exports.createTower = async (req, res) => {
         }
 
         // Check if tower with the same name already exists
-        const existingTower = building.towers.find(tower => tower.name === towerName);
-        if (existingTower) {
-            return res.status(400).json({ message: `Tower with name '${towerName}' already exists in this building` });
-        }
+        // const existingTower = building.towers.find(tower => tower.name === towerName);
+        // if (existingTower) {
+        //     return res.status(400).json({ message: `Tower with name '${towerName}' already exists in this building` });
+        // }
 
         // Create new tower
         const newTower = new Tower({
