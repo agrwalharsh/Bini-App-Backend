@@ -10,6 +10,7 @@ async function validateToken(req, res, next) {
         return res.status(401).json({ success: false, message: 'Unauthorized' });
     }
     req.token = authorization
+    console.log("Token -> " + req.token)
     try {
         const payload = await verifyToken(authorization);
         if (payload) {
@@ -31,7 +32,7 @@ const checkLatestToken = async (req, res, next) => {
         const user = await userModel.findById(req.user.userId);
 
         if (user.allowedMultipleDevices) {
-            if (!user.tokens.includes(token)) {
+            if (!user.tokens.includes(req.token)) {
                 return res.status(401).json({ message: 'Unauthorized' });
             }
         } else {
