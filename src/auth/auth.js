@@ -1,5 +1,5 @@
 const { verifyToken } = require("../auth/tokenHandler");
-const userModel = require("../models/userModel");
+const User = require('../models/userModel');
 const { ERROR } = require("../utils/constants");
 const CONSTANTS = require("../utils/constants");
 const errorHandler = require("../utils/errorHandler");
@@ -29,7 +29,17 @@ async function validateToken(req, res, next) {
 
 const checkLatestToken = async (req, res, next) => {
     try {
-        const user = await userModel.findById(req.user.userId);
+
+        const userId = req.user.userId; // Extract userId from the payload
+        console.log("User Id -> " + userId);
+        // console.log(req)
+
+        const user = await User.findById(userId)        
+        console.log(user)
+
+        if(!user){
+            return res.status(401).json({message: "User not found"})
+        }
 
         if (user.allowedMultipleDevices) {
             if (!user.tokens.includes(req.token)) {
@@ -41,9 +51,10 @@ const checkLatestToken = async (req, res, next) => {
             }
         }
         next();
-    } catch (err) {
+    } 
+    catch (err) {
         console.log(err.toString())
-        res.status(500).json({ message: 'Server error!' });
+        res.status(500).json({ message: 'Server error!', error: err.toString() });
     }
 };
 
