@@ -10,9 +10,15 @@ exports.createTower = async (req, res) => {
     const { buildingId, towerName, towerNumber, numberOfFlats } = req.body;
 
     try {
+
+        if (!buildingId || !towerName || !towerNumber || !numberOfFlats) {
+            return res.status(400).json({
+                message: "All fields are mandatory"
+            })
+        }
         const user = await User.findById(userId)
         var buildingid = buildingId
-        if(user.role == ROLES.BUILDING_ADMIN){
+        if (user.role == ROLES.BUILDING_ADMIN) {
             buildingid = user.building
         }
         const building = await Building.findById(buildingid).populate('towers').exec();

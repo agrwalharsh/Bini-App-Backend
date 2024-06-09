@@ -5,17 +5,23 @@ const Tower = require('../../models/towerModel');
 const User = require('../../models/userModel');
 const { ROLES } = require('../../utils/constants');
 
-exports.updateTower =  async (req, res) => {
+exports.updateTower = async (req, res) => {
     const { userId } = req.user
     const { buildingId, towerId, towerName, towerNumber, numberOfFlats } = req.body;
     console.log("Building ID -> " + buildingId)
 
     try {
 
+        if (!buildingId || !towerName || !towerNumber || !numberOfFlats || !towerId) {
+            return res.status(400).json({
+                message: "All fields are mandatory"
+            })
+        }
+
         const user = await User.findById(userId).select('role').lean();
 
         var buildingid = buildingId
-        if(user.role == ROLES.BUILDING_ADMIN){
+        if (user.role == ROLES.BUILDING_ADMIN) {
             buildingid = user.building
         }
 
@@ -24,12 +30,6 @@ exports.updateTower =  async (req, res) => {
 
         if (!building) {
             return res.status(404).json({ message: 'Building not found' });
-        }
-
-        // Check if tower with the same name already exists (except for the tower being updated)
-        const existingTower = building.towers.find(tower => tower._id.toString() !== towerId && tower.name === towerName);
-        if (existingTower) {
-            return res.status(400).json({ message: `Tower with name '${towerName}' already exists in this building` });
         }
 
         // Find the tower by ID
