@@ -29,9 +29,6 @@ const userSchema = new mongoose.Schema({
     tempPasswordExpiry: {
         type: Date
     },
-    password: {
-        type: String
-    },
     isActive: {
         type: Boolean,
         default: true
@@ -39,10 +36,38 @@ const userSchema = new mongoose.Schema({
     ref: {
         type: mongoose.Schema.Types.ObjectId,
         refPath: 'role'
+    },
+    latestToken: {
+        type: String,
+        default: null
+    },
+    tokens: {
+        type: [String],
+        default: []
+    },
+    allowedMultipleDevices: {
+        type: Boolean,
+        default: false
     }
 }, options);
 
 userSchema.index({ mobileNumber: 1, role: 1 }, { unique: true });
+
+userSchema.pre('save', function (next) {
+    switch (this.role) {
+        case CONSTANTS.ROLES.GLOBAL_ADMIN:
+        case CONSTANTS.ROLES.BUILDING_ADMIN:
+            this.allowedMultipleDevices = true;
+            break;
+        case CONSTANTS.ROLES.FLAT_ADMIN:
+        case CONSTANTS.ROLES.SECURITY:
+            this.allowedMultipleDevices = false;
+            break;
+        default:
+            this.allowedMultipleDevices = false;
+    }
+    next();
+});
 
 // Method to generate a temporary password
 userSchema.methods.generateTempPassword = async function () {
@@ -60,6 +85,8 @@ userSchema.methods.resetPassword = async function (tempPassword, newPassword) {
         this.password = await bcrypt.hash(newPassword, 10); // Hash the new password
         this.tempPassword = undefined; // Clear the temporary password
         this.tempPasswordExpiry = undefined; // Clear the temporary password expiry
+        this.latestToken = null; 
+        this.tokens = [];
         await this.save();
         return true;
     } else {
