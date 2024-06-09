@@ -45,6 +45,10 @@ exports.createTower = async (req, res) => {
         res.status(200).json({ message: 'Tower added successfully', tower: newTower });
     } catch (error) {
         console.error('Error adding tower:', error);
-        res.status(500).json({ message: 'Internal server error', error: error.toString() });
+        if (error.code === 11000) { // Duplicate key error
+            res.status(400).json({ message: `Tower with name '${towerName}' and number '${towerNumber}' already exists in this building` });
+        } else {
+            res.status(500).json({ message: 'Internal server error', error: error.toString() });
+        }
     }
 }

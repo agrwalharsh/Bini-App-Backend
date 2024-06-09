@@ -31,4 +31,6 @@ const towerSchema = new mongoose.Schema({
     },
 }, options);
 
+towerSchema.index({ name: 1, number: 1, building: 1 }, { unique: true });
+
 module.exports = mongoose.model('Tower', towerSchema)
