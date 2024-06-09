@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true
+        // required: true
     },
     role: {
         type: String,
@@ -57,9 +57,9 @@ userSchema.pre('save', function (next) {
     switch (this.role) {
         case CONSTANTS.ROLES.GLOBAL_ADMIN:
         case CONSTANTS.ROLES.BUILDING_ADMIN:
+        case CONSTANTS.ROLES.FLAT_ADMIN:
             this.allowedMultipleDevices = true;
             break;
-        case CONSTANTS.ROLES.FLAT_ADMIN:
         case CONSTANTS.ROLES.SECURITY:
             this.allowedMultipleDevices = false;
             break;
