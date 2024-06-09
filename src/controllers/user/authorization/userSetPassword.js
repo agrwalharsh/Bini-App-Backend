@@ -21,7 +21,7 @@ exports.setPassword = async(req, res) => {
             const result = await user.resetPassword(tempPassword, newPassword);
             if (result) {
                 // Generate a token (Assuming you have a function to generate JWT tokens)
-                const token = tokenHandler.generateToken(user.id, '1000h')
+                const token = tokenHandler.generateToken(user.id, '24h')
 
                 return res.status(200).json({ message: 'Password has been reset successfully', token: token });
             }

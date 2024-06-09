@@ -18,7 +18,7 @@ exports.loginUser = async (req, res) => {
             return res.status(401).json({ message: 'Incorrect password' });
         }
 
-        const token = tokenHandler.generateToken(user._id);
+        const token = tokenHandler.generateToken(user._id, '24h');
 
         if (user.allowedMultipleDevices) {
             user.tokens.push(token);
