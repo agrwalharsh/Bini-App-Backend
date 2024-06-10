@@ -56,4 +56,6 @@ const flatAdminSchema = new mongoose.Schema({
     }
 }, options);
 
+flatAdminSchema.index({ towerId: 1, flatNumber: 1 }, { unique: true });
+
 module.exports = User.discriminator(CONSTANTS.ROLES.FLAT_ADMIN, flatAdminSchema);

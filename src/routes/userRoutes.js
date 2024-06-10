@@ -11,6 +11,9 @@ const createFlatAdminController = require('../controllers/user/flatAdmin/createF
 const getFlatAdminsController = require('../controllers/user/flatAdmin/getAllFlatAdmins')
 const createSecurityUserController = require('../controllers/user/security/createSecurityUser')
 const getSecurityUsersByBuildingController = require('../controllers/user/security/getSecurityUsersByBuilding')
+const deleteFlatAdminController = require('../controllers/user/flatAdmin/deleteFlatAdmin')
+const updateFlatAdminController = require('../controllers/user/flatAdmin/updateFlatAdmin')
+const deleteSecurityUserController = require('../controllers/user/security/deleteSecurityUser')
 
 // Global Admin
 router.post('/createGlobalAdmin', createGlobalAdminController.createGlobalAdmin);
@@ -34,9 +37,15 @@ router.post('/createFlatAdmin', validateAuth, createFlatAdminController.createFl
 
 router.get('/getFlatAdmins', validateAuth, getFlatAdminsController.getFlatAdminsByBuilding);
 
+router.delete('/deleteFlatAdmin', validateAuth, deleteFlatAdminController.deleteFlatResident)
+
+router.put('/updateFlatAdmin', validateAuth, updateFlatAdminController.updateFlatAdmin)
+
 // Security User
 router.post('/createSecurityUser', validateAuth, createSecurityUserController.createSecurityUser)
 
 router.get('/getSecurityUsers', validateAuth, getSecurityUsersByBuildingController.getSecurityUsersByBuilding)
+
+router.delete('/deleteSecurityUser', validateAuth, deleteSecurityUserController.deleteSecurityUser)
 
 module.exports = router;
