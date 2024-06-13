@@ -94,4 +94,13 @@ userSchema.methods.resetPassword = async function (tempPassword, newPassword) {
     }
 };
 
+userSchema.methods.logout = function(token) {
+    if (this.allowedMultipleDevices) {
+        this.tokens = this.tokens.filter(t => t !== token);
+    } else {
+        this.latestToken = null;
+    }
+    return this.save();
+};
+
 module.exports = mongoose.model('User', userSchema);
