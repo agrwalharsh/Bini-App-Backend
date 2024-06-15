@@ -4,6 +4,7 @@ const express = require('express')
 const buildingRoutes = require('./routes/buildingRoutes')
 const userRoutes = require('./routes/userRoutes')
 const towerRoutes = require('./routes/towerRoutes')
+const visitorRequestRoutes = require('./routes/visitorRequestRoutes')
 const errorHandler = require('./utils/errorHandler')
 const connectDB = require('./config/db')
 const CONSTANTS = require('./utils/constants')
@@ -17,9 +18,10 @@ app.use(morgan('dev'));
 app.use(errorHandler);
 
 // Routes
-app.use('/building', buildingRoutes);
-app.use('/user', userRoutes);
+app.use('/building', buildingRoutes)
+app.use('/user', userRoutes)
 app.use('/tower', towerRoutes)
+app.use('/visitor', visitorRequestRoutes)
 
 app.get('/', (req, res) => {
     res.send('Welcome to my API!');
