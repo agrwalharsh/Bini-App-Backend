@@ -5,6 +5,7 @@ const createVisitorRequestController = require('../controllers/visitor/createVis
 const getVisitorRequestsBySecurityController = require('../controllers/visitor/getVisitorRequestBySecurity')
 const getVisitorRequestsByFlatAdminController = require('../controllers/visitor/getVisitorRequestByFlatUser')
 const getFlatDetailsForSecurityController = require('../controllers/user/security/getFlatDetailsForSecurity')
+const updateVisitorRequestStatusController = require('../controllers/visitor/updateVisitorRequestStatus')
 
 router.post('/createRequest', validateAuth, createVisitorRequestController.createVisitorRequest)
 
@@ -13,5 +14,7 @@ router.get('/getRequestsBySecurity', validateAuth, getVisitorRequestsBySecurityC
 router.get('/getRequestsByFlatAdmin', validateAuth, getVisitorRequestsByFlatAdminController.getFlatAdminVisitorRequests)
 
 router.get('/getFlatDetailsForSecurity', validateAuth, getFlatDetailsForSecurityController.getFlatDetailsForSecurity)
+
+router.post('/updateStatus', validateAuth, updateVisitorRequestStatusController.updateVisitorRequestStatus)
 
 module.exports = router;
