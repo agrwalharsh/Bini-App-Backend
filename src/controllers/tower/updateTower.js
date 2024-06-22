@@ -7,25 +7,31 @@ const { ROLES } = require('../../utils/constants');
 
 exports.updateTower = async (req, res) => {
     const { userId } = req.user
-    const { buildingId, towerId, towerName, towerNumber, numberOfFlats } = req.body;
-    console.log("Building ID -> " + buildingId)
+    // const { buildingId, towerId, towerName, towerNumber, numberOfFlats } = req.body;
+    const { towerId, towerName, towerNumber, numberOfFlats } = req.body;
 
     try {
 
-        if (!buildingId || !towerName || !towerNumber || !numberOfFlats || !towerId) {
+        if (!towerName || !towerNumber || !numberOfFlats || !towerId) {
             return res.status(400).json({
                 message: "All fields are mandatory"
             })
         }
 
-        const user = await User.findById(userId).select('role').lean();
+        const user = await User.findById(userId).lean();
 
-        var buildingid = buildingId
-        if (user.role == ROLES.BUILDING_ADMIN) {
-            buildingid = user.building
+        console.log(user)
+
+        if (user.role != ROLES.BUILDING_ADMIN) {
+            return res.status(403).json({
+                message: "Only building admin can update tower"
+            })
         }
+        var buildingId = user.building
 
-        const building = await Building.findById(buildingid).populate('towers').exec();
+        console.log(buildingId)
+
+        const building = await Building.findById(buildingId).populate('towers').exec();
         console.log("Building -> " + building)
 
         if (!building) {
