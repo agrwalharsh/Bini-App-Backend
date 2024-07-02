@@ -55,6 +55,9 @@ function initWebSocketServer(server) {
                 }
             }
         });
+        ws.on("connect_error", (err) => {
+            console.log(`connect_error due to ${err.message}`);
+        });
     });
 
     return wss;
