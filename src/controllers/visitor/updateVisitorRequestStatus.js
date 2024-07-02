@@ -1,6 +1,7 @@
 const User = require('../../models/userModel');
 const VisitorRequest = require('../../models/visitorRequestModel')
 const { ROLES } = require('../../utils/constants');
+const { notifyClients } = require('../../ws/websocketService');
 
 exports.updateVisitorRequestStatus = async (req, res) => {
     try {
@@ -27,6 +28,8 @@ exports.updateVisitorRequestStatus = async (req, res) => {
 
         visitorRequest.status = status;
         await visitorRequest.save();
+
+        notifyClients({ type: 'visitor_request_update', userId: visitorRequest.security });
 
         res.json({ message: `Visitor request ${status} successfully`, visitorRequest });
     } catch (err) {

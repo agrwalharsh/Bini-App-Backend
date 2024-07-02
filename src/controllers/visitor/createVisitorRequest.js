@@ -1,6 +1,7 @@
 const User = require('../../models/userModel');
 const VisitorRequest = require('../../models/visitorRequestModel')
 const { ROLES } = require('../../utils/constants');
+const WebSocketService = require('../../ws/websocketService')
 
 exports.createVisitorRequest = async (req, res) => {
     try {
@@ -20,7 +21,7 @@ exports.createVisitorRequest = async (req, res) => {
         }
 
         const flatuser = await User.findById(flatUser)
-        if(!flatuser || flatuser.role != ROLES.FLAT_ADMIN){
+        if (!flatuser || flatuser.role != ROLES.FLAT_ADMIN) {
             return res.status(400).json({
                 message: "Invalid flat user"
             })
@@ -35,6 +36,10 @@ exports.createVisitorRequest = async (req, res) => {
         });
 
         await newRequest.save();
+
+        WebSocketService.notifyClients({ type: 'visitor_request_update', userId: flatUser });
+
+
         res.status(201).json({ message: 'Visitor request created successfully', newRequest });
     } catch (err) {
         console.error(err);
