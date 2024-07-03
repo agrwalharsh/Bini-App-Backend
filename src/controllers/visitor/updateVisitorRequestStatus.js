@@ -1,6 +1,7 @@
 const User = require('../../models/userModel');
 const VisitorRequest = require('../../models/visitorRequestModel')
 const { ROLES } = require('../../utils/constants');
+const { sendNotification } = require('../../utils/notificationService');
 
 exports.updateVisitorRequestStatus = async (req, res) => {
     try {
