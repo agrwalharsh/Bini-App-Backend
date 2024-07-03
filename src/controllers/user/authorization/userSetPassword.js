@@ -6,7 +6,7 @@ exports.setPassword = async (req, res) => {
     const session = await mongoose.startSession();
     session.startTransaction();
     try {
-        const { mobileNo, tempPassword, newPassword, role } = req.body;
+        const { mobileNo, tempPassword, newPassword, role, fcmToken } = req.body;
 
         if (!mobileNo || !tempPassword || !newPassword || !role) {
             await session.abortTransaction();
@@ -35,6 +35,10 @@ exports.setPassword = async (req, res) => {
                     user.tokens.push(token);
                 } else {
                     user.latestToken = token;
+                }
+
+                if (fcmToken) {
+                    await user.addFcmToken(fcmToken);
                 }
 
                 // Save the user with the new token
