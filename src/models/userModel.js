@@ -45,6 +45,10 @@ const userSchema = new mongoose.Schema({
         type: [String],
         default: []
     },
+    fcmTokens: {
+        type: [String],
+        default: []
+    },
     allowedMultipleDevices: {
         type: Boolean,
         default: false
@@ -101,6 +105,20 @@ userSchema.methods.logout = function(token) {
         this.latestToken = null;
     }
     return this.save();
+};
+
+// Add or update FCM token
+userSchema.methods.addFcmToken = async function (token) {
+    if (!this.fcmTokens.includes(token)) {
+        this.fcmTokens.push(token);
+        await this.save();
+    }
+};
+
+// Remove FCM token
+userSchema.methods.removeFcmToken = async function (token) {
+    this.fcmTokens = this.fcmTokens.filter(t => t !== token);
+    await this.save();
 };
 
 module.exports = mongoose.model('User', userSchema);

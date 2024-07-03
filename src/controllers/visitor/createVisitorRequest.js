@@ -1,7 +1,7 @@
 const User = require('../../models/userModel');
 const VisitorRequest = require('../../models/visitorRequestModel')
 const { ROLES } = require('../../utils/constants');
-const WebSocketService = require('../../ws/websocketService')
+const { sendNotification } = require('../../utils/notificationService');
 
 exports.createVisitorRequest = async (req, res) => {
     try {
@@ -37,8 +37,13 @@ exports.createVisitorRequest = async (req, res) => {
 
         await newRequest.save();
 
-        WebSocketService.notifyClients({ type: 'visitor_request_update', userId: flatUser });
-
+        const notificationPayload = {
+            notification: {
+                title: 'New Visitor Request',
+                body: `${name} is requesting to visit you for ${purpose}`
+            }
+        };
+        sendNotification(flatuser.fcmTokens, notificationPayload);
 
         res.status(201).json({ message: 'Visitor request created successfully', newRequest });
     } catch (err) {

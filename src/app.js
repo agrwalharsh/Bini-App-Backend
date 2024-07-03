@@ -1,9 +1,6 @@
 require('dotenv').config()
 const morgan = require('morgan')
 const express = require('express')
-const http = require('http');
-const WebSocket = require('ws');
-const { initWebSocketServer } = require('./ws/websocketService');
 const buildingRoutes = require('./routes/buildingRoutes')
 const userRoutes = require('./routes/userRoutes')
 const towerRoutes = require('./routes/towerRoutes')
@@ -13,8 +10,6 @@ const connectDB = require('./config/db')
 const CONSTANTS = require('./utils/constants')
 
 const app = express();
-const server = http.createServer(app);
-initWebSocketServer(server);
 connectDB()
 
 // Middleware to parse JSON bodies

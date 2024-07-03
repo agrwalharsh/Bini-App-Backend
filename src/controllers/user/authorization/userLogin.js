@@ -5,7 +5,7 @@ const userModel = require('../../../models/userModel');
 const tokenHandler = require('../../../auth/tokenHandler')
 
 exports.loginUser = async (req, res) => {
-    const { mobileNumber, password, role } = req.body;
+    const { mobileNumber, password, role, fcmToken } = req.body;
 
     try {
         const user = await userModel.findOne({ mobileNumber: mobileNumber, role: role });
@@ -25,6 +25,11 @@ exports.loginUser = async (req, res) => {
         } else {
             user.latestToken = token;
         }
+        
+        if (fcmToken) {
+            await user.addFcmToken(fcmToken);
+        }
+
         await user.save();
 
         res.json({ token: token, mobileNumber: user.mobileNumber, role: user.role });

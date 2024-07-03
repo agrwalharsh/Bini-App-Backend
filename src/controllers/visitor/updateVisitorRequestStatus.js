@@ -1,7 +1,6 @@
 const User = require('../../models/userModel');
 const VisitorRequest = require('../../models/visitorRequestModel')
 const { ROLES } = require('../../utils/constants');
-const { notifyClients } = require('../../ws/websocketService');
 
 exports.updateVisitorRequestStatus = async (req, res) => {
     try {
@@ -29,7 +28,14 @@ exports.updateVisitorRequestStatus = async (req, res) => {
         visitorRequest.status = status;
         await visitorRequest.save();
 
-        notifyClients({ type: 'visitor_request_update', userId: visitorRequest.security });
+        const securityUser = await User.findById(visitorRequest.security);
+        const notificationPayload = {
+            notification: {
+                title: `Visitor Request ${status}`,
+                body: `Your visitor request for ${visitorRequest.name} has been ${status}`
+            }
+        };
+        sendNotification(securityUser.fcmTokens, notificationPayload);
 
         res.json({ message: `Visitor request ${status} successfully`, visitorRequest });
     } catch (err) {
