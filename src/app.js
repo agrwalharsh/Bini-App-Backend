@@ -7,7 +7,6 @@ const towerRoutes = require('./routes/towerRoutes')
 const visitorRequestRoutes = require('./routes/visitorRequestRoutes')
 const errorHandler = require('./utils/errorHandler')
 const connectDB = require('./config/db')
-const CONSTANTS = require('./utils/constants')
 
 const app = express();
 connectDB()

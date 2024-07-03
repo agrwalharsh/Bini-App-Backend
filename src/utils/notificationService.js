@@ -16,9 +16,10 @@ const firebaseConfig = {
 }
 
 // Initialize Firebase Admin SDK
-admin.initializeApp(firebaseConfig);
+admin.initializeApp({credential: admin.credential.cert(firebaseConfig)});
 
 const sendNotification = async (tokens, payload) => {
+    console.log(tokens)
     try {
         const response = await admin.messaging().sendToDevice(tokens, payload);
         console.log('Notification sent successfully:', response);
