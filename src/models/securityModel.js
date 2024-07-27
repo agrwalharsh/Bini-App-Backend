@@ -10,7 +10,12 @@ const securitySchema = new mongoose.Schema({
     towerId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Tower',
-        required: true
+        // required: true
+    },
+    building: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Building',
+        // required: true
     },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,

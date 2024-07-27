@@ -6,46 +6,47 @@ const Security = require('../../../models/securityModel');
 const User = require('../../../models/userModel');
 const { ROLES } = require('../../../utils/constants');
 
-exports.getFlatDetailsForSecurity = async (req, res) => {
+exports.getAllFlatDetailsForSecurity = async (req, res) => {
     const { userId } = req.user;
 
     try {
-        // Retrieve user role and ensure the user is a building admin
-        const user = await User.findById(userId)//.select('role').lean();
+        // Retrieve user role and ensure the user is a security admin
+        const user = await User.findById(userId);
         if (!user || user.role !== ROLES.SECURITY) {
-            return res.status(403).json({ message: 'Only security is authorized to perform this action' });
+            return res.status(403).json({ message: 'Only security admins are authorized to perform this action' });
         }
 
-        // Get building ID from the user model
+        // Populate the referenced document to get the security user's details including the building
         const securityUser = await User.findOne({ _id: userId, role: ROLES.SECURITY })
-            .populate('ref') // Populate the referenced document
+            .populate('ref')
             .exec();
 
-        console.log("-b")
         console.log(securityUser)
 
         if (!securityUser) {
             throw new Error('User not found or user is not a security admin');
         }
-        console.log("-a")
-        console.log(securityUser.towerId);
-        console.log("a")
-        console.log(securityUser)
-        console.log("b")
-        const towerId = securityUser.towerId
 
-        console.log(towerId)
-        console.log("c")
+        // Get the building ID from the security user's reference
+        const buildingId = securityUser.building;
+
+        // Fetch all towers associated with the building
+        const towers = await Tower.find({ building: buildingId });
+
+        // Get all tower IDs
+        const towerIds = towers.map(tower => tower._id);
 
         // Fetch all flat admins associated with the building's towers, and populate tower details
-        const flatAdmins = await FlatAdmin.find({ towerId: towerId }).populate('towerId', 'name number');
+        const flatAdmins = await FlatAdmin.find({ towerId: { $in: towerIds } }).populate('towerId', 'name number');
 
+        // Prepare the response
         const response = flatAdmins.map(flatAdmin => ({
             _id: flatAdmin._id,
             towerId: flatAdmin.towerId._id,
             towerName: flatAdmin.towerId.name,
             towerNumber: flatAdmin.towerId.number,
             flatNumber: flatAdmin.flatNumber,
+            // Uncomment the following lines if you need these details
             // flatOwnerName: flatAdmin.flatOwnerName,
             // flatOwnerAadhar: flatAdmin.flatOwnerAadhar,
             // flatOwnerNumber: flatAdmin.flatOwnerNumber,
