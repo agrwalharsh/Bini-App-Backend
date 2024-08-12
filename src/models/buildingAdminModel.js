@@ -7,10 +7,10 @@ const options = {
 }
 
 const buildingAdminSchema = new mongoose.Schema({
-    adminName: {
-        type: String,
-        required: true
-    },
+    // adminName: {
+    //     type: String,
+    //     required: true
+    // },
     aadhar: {
         type: String,
         required: true,
@@ -21,11 +21,11 @@ const buildingAdminSchema = new mongoose.Schema({
         ref: 'Building',
         required: true
     },
-    createdBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
-    },
+    // createdBy: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'User',
+    //     required: true
+    // },
 }, options);
 
 module.exports = User.discriminator(CONSTANTS.ROLES.BUILDING_ADMIN, buildingAdminSchema);

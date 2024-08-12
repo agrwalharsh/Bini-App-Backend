@@ -10,11 +10,23 @@ const buildingSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    constructionCompany: {
+    address: {
         type: String,
         required: true
     },
-    address: {
+    city: {
+        type: String,
+        required: true
+    },
+    country: {
+        type: String,
+        required: true
+    },
+    pinCode: {
+        type: String,
+        required: true
+    },
+    constructionCompany: {
         type: String,
         required: true
     },
@@ -30,11 +42,11 @@ const buildingSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    createdBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
-    },
+    // createdBy: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'User',
+    //     required: true
+    // },
     buildingAdmins: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'BuildingAdmin'
@@ -81,6 +93,6 @@ buildingSchema.methods.isSubscriptionValid = async function () {
     }
 };
 
-buildingSchema.index({ name: 1, address: 1 }, { unique: true });
+// buildingSchema.index({ name: 1, address: 1 }, { unique: true });
 
 module.exports = mongoose.model('Building', buildingSchema);
