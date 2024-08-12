@@ -8,6 +8,7 @@ const updateBuildingSubscriptionController = require('../controllers/building/up
 const deleteBuildingController = require('../controllers/building/deleteBuilding')
 const updateBuildingController = require('../controllers/building/updateBuilding')
 const buildingDetailController = require('../controllers/building/buildingDetail')
+const buildingsAndAdminListController = require('../controllers/building/buildingAndAdminList')
 
 // Building
 
@@ -20,6 +21,8 @@ router.put('/updateBuilding', validateAuth, updateBuildingController.updateBuild
 router.delete('/deleteBuilding', validateAuth, deleteBuildingController.deleteBuilding);
 
 router.get('/buildingsList', validateAuth, buildingListController.getAllBuildings);
+
+router.get('/buildingsAndAdminList', buildingsAndAdminListController.getAllBuildingsAndAdmin);
 
 router.put('/updateSubscription', validateAuth, updateBuildingSubscriptionController.updateSubscription);
 
