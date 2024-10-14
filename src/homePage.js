@@ -22,7 +22,7 @@ router.get('/', (req, res) => {
         </style>
       </head>
       <body>
-        <h1>Welcome to My Node.js Application!</h1>
+        <h1>Welcome to Bini Application!</h1>
       </body>
     </html>
   `);
