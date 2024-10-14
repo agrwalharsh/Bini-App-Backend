@@ -17,12 +17,12 @@ app.use(morgan('dev'));
 app.use(errorHandler);
 
 // Routes
-app.use('/building', buildingRoutes)
-app.use('/user', userRoutes)
-app.use('/tower', towerRoutes)
-app.use('/visitor', visitorRequestRoutes)
+app.use('/api/building', buildingRoutes)
+app.use('/api/user', userRoutes)
+app.use('/api/tower', towerRoutes)
+app.use('/api/visitor', visitorRequestRoutes)
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
     res.send('Welcome to my API!');
 });
 
