@@ -7,6 +7,7 @@ const towerRoutes = require('./routes/towerRoutes')
 const visitorRequestRoutes = require('./routes/visitorRequestRoutes')
 const errorHandler = require('./utils/errorHandler')
 const connectDB = require('./config/db')
+const welcomeRoute = require('./homePage');
 
 const app = express();
 connectDB()
@@ -25,6 +26,8 @@ app.use('/api/visitor', visitorRequestRoutes)
 app.get('/api', (req, res) => {
     res.send('Welcome to my API!');
 });
+
+app.use('/', welcomeRoute);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
